@@ -32,25 +32,25 @@ router.post('/createuser', async (req, res) => {
 
     await newUser.save()
 
-    const transport = nodemailer.createTransport({
-      host:'sandbox.smtp.mailtrap.io',
-      port:2525,
-      secure:false,
-      auth:{
-        user:process.env.EMAIL,
-        pass:process.env.PASSWORD
-      }
-    })
+    // const transport = nodemailer.createTransport({
+    //   host:'sandbox.smtp.mailtrap.io',
+    //   port:2525,
+    //   secure:false,
+    //   auth:{
+    //     user:process.env.EMAIL,
+    //     pass:process.env.PASSWORD
+    //   }
+    // })
 
-    const token = jwt.sign({email},process.env.SECRET_KEY,{expiresIn:'1h'})
-    const verificationLink = `http://localhost:3001/users/verify/${token}`;
+    // const token = jwt.sign({email},process.env.SECRET_KEY,{expiresIn:'1h'})
+    // const verificationLink = `http://localhost:3001/users/verify/${token}`;
 
-    await transport.sendMail({
-      from:'KindBridge',
-      to:email,
-      subject:"Verification email from KindBridge",
-      html:`<a href="${verificationLink}">Click to Verify</a>`
-    })
+    // await transport.sendMail({
+    //   from:'KindBridge',
+    //   to:email,
+    //   subject:"Verification email from KindBridge",
+    //   html:`<a href="${verificationLink}">Click to Verify</a>`
+    // })
 
 
     return res.status(200).json({ message: 'New User Created & Activation Link Send' })
@@ -86,9 +86,9 @@ router.post('/userlogin', async (req, res) => {
       return res.status(404).json({ message: "User not Found" })
     }
 
-    if(!user.isVerified){
-      return res.status(409).json({message:"User is not verified"})
-    }
+    // if(!user.isVerified){
+    //   return res.status(409).json({message:"User is not verified"})
+    // }
 
     const validatePassword = await bcrypt.compare(password, user.password)
     if (!validatePassword) {
